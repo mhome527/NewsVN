@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tin Công Nghệ {% if day %}— {{ day | vn_date }}{% endif %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <h1><a href="/">📡 Tin Công Nghệ Hàng Ngày</a></h1>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h2>Lưu trữ</h2>
+      {% if dates %}
+      <ul class="date-list">
+        {% for d in dates %}
+        <li>
+          <a href="/date/{{ d.fetched_date }}"
+             class="{{ 'active' if d.fetched_date == day }}">
+            {{ d.fetched_date | vn_date }}
+            <span class="count">{{ d.count }}</span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="empty">Chưa có dữ liệu.</p>
+      {% endif %}
+    </aside>
+
+    <main>
+      {% if day %}
+      <div class="day-header">
+        <h2>Tin ngày {{ day | vn_date }}{% if is_today %} <span class="badge">Hôm nay</span>{% endif %}</h2>
+        <span class="total">{{ articles | length }} bài</span>
+      </div>
+
+      {% if sources %}
+      <div class="filters">
+        <button class="filter-btn active" data-source="all">Tất cả</button>
+        {% for s in sources %}
+        <button class="filter-btn" data-source="{{ s }}">{{ s }}</button>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="articles">
+        {% for a in articles %}
+        <article class="card" data-source="{{ a.source }}">
+          <div class="card-meta">
+            <span class="source">{{ a.source }}</span>
+            {% if a.published_at %}<span class="time">{{ a.published_at[:16] }}</span>{% endif %}
+          </div>
+          {% if a.title_vi %}
+          <h3><a href="{{ a.link }}" target="_blank" rel="noopener">{{ a.title_vi }}</a></h3>
+          <p class="original-title">{{ a.title }}</p>
+          {% if a.summary_vi %}<p class="summary">{{ a.summary_vi }}</p>{% endif %}
+          {% else %}
+          <h3><a href="{{ a.link }}" target="_blank" rel="noopener">{{ a.title }}</a></h3>
+          {% if a.summary %}<p class="summary">{{ a.summary }}</p>{% endif %}
+          {% endif %}
+          <p class="ref-link">🔗 <a href="{{ a.link }}" target="_blank" rel="noopener">Link tham khảo ({{ a.source }})</a></p>
+        </article>
+        {% else %}
+        <p class="empty">Không có tin nào trong ngày này.</p>
+        {% endfor %}
+      </div>
+
+      {% else %}
+      <div class="empty-state">
+        <h2>Chưa có tin tức nào</h2>
+        <p>Chạy lệnh sau để lấy tin lần đầu:</p>
+        <pre>python3 fetch_news.py</pre>
+      </div>
+      {% endif %}
+    </main>
+  </div>
+
+  <script>
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const src = btn.dataset.source;
+        document.querySelectorAll('.card').forEach(card => {
+          card.style.display = (src === 'all' || card.dataset.source === src) ? '' : 'none';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

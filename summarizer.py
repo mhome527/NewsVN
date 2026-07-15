@@ -17,7 +17,7 @@ load_dotenv()
 
 MODEL = "gemini-3.1-flash-lite"
 BATCH_SIZE = 10
-MAX_PER_RUN = 10
+MAX_PER_RUN = 20
 
 SYSTEM_PROMPT = (
     "Bạn là biên tập viên tin công nghệ. Với mỗi bài báo (tiếng Anh hoặc tiếng Nhật) "

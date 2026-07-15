@@ -1,6 +1,21 @@
 khi sửa source cần:
 git pull code mới trên server rồi sudo systemctl restart newsvn (hoặc chỉ cần chạy lại fetch_news.py/summarizer.py qua cron, không cần restart web app vì không đổi gì liên quan tới app.py).
 
+=================
+Lệnh restart web app trên server:
+
+
+sudo systemctl restart newsvn
+Dùng khi bạn git pull code mới có đụng tới app.py, database.py, templates/, static/ (những thứ ảnh hưởng trực tiếp tới web app) — restart để gunicorn nạp lại code mới.
+
+Không cần restart nếu chỉ sửa summarizer.py/fetch_news.py (như lần vừa rồi), vì 2 script đó chạy độc lập qua cron, không nằm trong tiến trình gunicorn đang chạy.
+
+Kiểm tra lại sau khi restart:
+
+
+sudo systemctl status newsvn
+
+=================
 
 
 Đây là các bước cài đặt và chạy project trên server Linux (Ubuntu/Debian), dùng repo vừa push lên GitHub.

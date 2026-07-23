@@ -32,6 +32,20 @@
     </aside>
 
     <main>
+      {% if dates %}
+      <div class="mobile-date-picker">
+        <label for="date-select">📅 Chọn ngày</label>
+        <select id="date-select" onchange="if(this.value) window.location.href=this.value;">
+          {% for d in dates %}
+          <option value="/date/{{ d.fetched_date }}"
+                  {{ 'selected' if d.fetched_date == day }}>
+            {{ d.fetched_date | vn_date }} ({{ d.count }} bài)
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+
       {% if day %}
       <div class="day-header">
         <h2>Tin ngày {{ day | vn_date }}{% if is_today %} <span class="badge">Hôm nay</span>{% endif %}</h2>

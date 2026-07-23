@@ -167,7 +167,39 @@ header h1 a { color: var(--text); text-decoration: none; }
   margin-top: 10px;
 }
 
+/* Dropdown chọn ngày cho mobile: ẩn trên desktop (đã có sidebar) */
+.mobile-date-picker { display: none; }
+
+.mobile-date-picker label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.mobile-date-picker select {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.mobile-date-picker select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
 @media (max-width: 720px) {
   .layout { grid-template-columns: 1fr; }
-  .sidebar { order: 2; }
+  /* Trên mobile ẩn sidebar dài, thay bằng dropdown chọn ngày gọn gàng */
+  .sidebar { display: none; }
+  .mobile-date-picker { display: block; margin-bottom: 16px; }
 }
